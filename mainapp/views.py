@@ -1,19 +1,30 @@
 from django.shortcuts import render
 import json
 
+from mainapp.models import Product, Category
+
 
 def index(requests):
-    return render(requests, 'mainapp/index.html')
+    context = {
+        'products': Product.objects.all()[:4]
+    }
+    return render(requests, 'mainapp/index.html', context)
 
 
 def products(requests):
-    with open('mainapp/templates/mainapp/data.json', 'r', encoding='utf-8') as file:
-        links_menu = json.load(file)
 
     context = {
-        'links_menu': links_menu
+        'links_menu': Category.objects.all()
     }
 
+    return render(requests, 'mainapp/products.html', context)
+
+
+def products_list(requests, pk):
+    print(pk)
+    context = {
+        'links_menu': Category.objects.all()
+    }
     return render(requests, 'mainapp/products.html', context)
 
 
