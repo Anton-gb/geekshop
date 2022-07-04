@@ -1,5 +1,4 @@
 from django.shortcuts import render
-import json
 
 from mainapp.models import Product, Category
 
@@ -12,11 +11,9 @@ def index(requests):
 
 
 def products(requests):
-
     context = {
         'links_menu': Category.objects.all()
     }
-
     return render(requests, 'mainapp/products.html', context)
 
 
