@@ -5,30 +5,30 @@ from django.contrib import auth
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
 
 
-def login(requests):
-    login_form = ShopUserLoginForm(data=requests.POST)
-    if requests.method == 'POST' and login_form.is_valid():
-        username = requests.POST.get('username')
-        password = requests.POST.get('password')
+def login(request):
+    login_form = ShopUserLoginForm(data=request.POST)
+    if request.method == 'POST' and login_form.is_valid():
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
-            auth.login(requests, user)
+            auth.login(request, user)
             return HttpResponseRedirect(reverse('index'))
     context = {
         'form': login_form,
         'title': 'Вход в систему'
     }
-    return render(requests, 'authapp/login.html', context)
+    return render(request, 'authapp/login.html', context)
 
 
-def logout(requests):
-    auth.logout(requests)
+def logout(request):
+    auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
 
-def register(requests):
-    if requests.method == 'POST':
-        register_form = ShopUserRegisterForm(requests.POST, requests.FILES)
+def register(request):
+    if request.method == 'POST':
+        register_form = ShopUserRegisterForm(request.POST, request.FILES)
 
         if register_form.is_valid():
             register_form.save()
@@ -40,21 +40,21 @@ def register(requests):
         'form': register_form,
         'title': 'Регистрация'
     }
-    return render(requests, 'authapp/register.html', context)
+    return render(request, 'authapp/register.html', context)
 
 
-def edit(requests):
-    if requests.method == 'POST':
-        edit_form = ShopUserEditForm(requests.POST, requests.FILES, instance=requests.user)
+def edit(request):
+    if request.method == 'POST':
+        edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('authapp:edit'))
 
     else:
-        edit_form = ShopUserEditForm(instance=requests.user)
+        edit_form = ShopUserEditForm(instance=request.user)
 
     context = {
         'form': edit_form,
         'title': 'Редактирование профиля'
     }
-    return render(requests, 'authapp/edit.html', context)
+    return render(request, 'authapp/edit.html', context)
