@@ -6,7 +6,7 @@
         </li>
     {% for link_menu in links_menu %}
         <li>
-            <a href="{% url 'products:product_list' link_menu.pk %}" {% if request.resolver_match.url_name == link_menu.href %}class="active"{% endif %}>
+            <a href="{% url 'products:product_list' link_menu.pk %}" {% if request.resolver_match.url_name == '' %}class="active"{% endif %}>
                 {{ link_menu.name }}
             </a>
         </li>
