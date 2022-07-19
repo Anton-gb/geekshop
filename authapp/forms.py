@@ -35,6 +35,8 @@ class ShopUserRegisterForm(UserCreationForm):
 
     def clean_email(self):
         user_email = self.cleaned_data['email']
+        # Такой запрос в БД выдает пустой QuerySet и получается зарегистрировать пользователя с одинаковыми почтами
+        print(ShopUser.objects.filter(email=user_email))
         if ShopUser.objects.filter(email=user_email).exists():
             raise forms.ValidationError('Эта почта уже зарегистрирована')
 
@@ -63,9 +65,21 @@ class ShopUserEditForm(UserChangeForm):
         return current_age
 
     def clean_email(self):
+        # Здесь я получаю имя пользователя, что бы потом получить его почту
+        user_name = self.cleaned_data['username']
+
+        # Здесь я получаю значение почты из поля формы
         user_email = self.cleaned_data['email']
-        print(ShopUser.objects.filter(email=user_email))
-        if ShopUser.objects.filter(email=user_email).exists():
+
+        # При таком запросе получается найти пользователя в БД
+        print(ShopUser.objects.filter(username='django3'))
+
+        # А при таком запросе НЕ получается найти пользователя в БД, выдает пустой QuerySet
+        print(ShopUser.objects.filter(email='django3@gd.local'))
+
+        if ShopUser.objects.get(username=user_name).email == user_email:
+            return user_email
+        elif ShopUser.objects.filter(email=user_email).exists():
             raise forms.ValidationError('Эта почта уже зарегистрирована')
 
         return user_email

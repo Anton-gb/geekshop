@@ -38,7 +38,7 @@ def basket_add(request, pk):
 @login_required
 def basket_remove(request, pk):
     Basket.objects.filter(pk=pk).delete()
-    return HttpResponseRedirect('')
+    return HttpResponseRedirect(reverse('basket:list'))
 
 
 @login_required
