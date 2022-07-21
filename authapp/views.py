@@ -35,7 +35,6 @@ def logout(request):
 def register(request):
     if request.method == 'POST':
         register_form = ShopUserRegisterForm(request.POST, request.FILES)
-
         if register_form.is_valid():
             register_form.save()
             return HttpResponseRedirect(reverse('authapp:login'))
@@ -55,7 +54,6 @@ def edit(request):
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('authapp:edit'))
-
     else:
         edit_form = ShopUserEditForm(instance=request.user)
 
