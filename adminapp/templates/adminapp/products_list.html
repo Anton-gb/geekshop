@@ -8,7 +8,7 @@
             </a>
         </button>
         {% for object in objects_list %}
-            <div class="product_record">
+            <div class="product_record {% if not object.is_active %}not_active{% endif %}">
                 <img
                         src="{% if object.image %}/media/{{ object.image }}{% else %} {% static 'img/default.png' %}{% endif %}"
                         alt="{{ object.name }}">

@@ -7,7 +7,8 @@
             Уверены, что хотите удалить товар {{ object.name }} ({{ object.category.name }})
             <form method="post">
                 {% csrf_token %}
-                <button class="btn btn-danger">Уверен</button>
+                <button class="btn btn-danger" name="delete_product">Сделать неактивным</button>
+                <button class="btn btn-danger" name="really_delete_product">Удалить</button>
                 <a class="btn btn-info" href="{% url 'adminapp:products_read' object.category_id %}">Я передумал</a>
             </form>
         </div>

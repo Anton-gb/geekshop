@@ -68,7 +68,6 @@ class UserUpdateView(AccessMixin, UpdateView):
     model = ShopUser
     template_name = 'adminapp/user_form.html'
     form_class = UserAdminEditForm
-
     # success_url = reverse_lazy('adminapp:user_read')
 
     def get_success_url(self):
@@ -168,9 +167,20 @@ class ProductDeleteView(AccessMixin, DeleteView):
         category_pk = self.get_object().category_id
         return reverse('adminapp:products_read', args=[category_pk])
 
-    def delete(self, *args, **kwargs):
-        return HttpResponseRedirect(self.get_success_url())
+    def form_valid(self, form):
+        url = self.get_success_url()
+        if 'delete_product' in form.data:
+            self.object = self.get_object()
+            self.object.delete()
+        elif 'really_delete_product' in form.data:
+            self.object = self.get_object()
+            self.object.really_delete()
 
+        return HttpResponseRedirect(url)
+
+        # self.object = self.get_object()
+        # self.object.is_active = False
+        # self.object.save()
     #53:00
 
 
