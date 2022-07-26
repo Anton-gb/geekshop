@@ -26,8 +26,15 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Активен')
 
     def __str__(self):
-        return f"{self.name} ({self.category.name})"
+        return f"#{self.pk}. {self.name} ({self.category.name})"
 
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+
+    # def delete(self, using=None, keep_parents=False):
+    #     self.is_active = False
+    #     self.save()
+    #
+    # def really_delete(self):
+    #     super().delete()
