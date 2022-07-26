@@ -32,9 +32,9 @@ class Product(models.Model):
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
 
-    def delete(self, using=None, keep_parents=False):
-        self.is_active = False
-        self.save()
-
-    def really_delete(self):
-        super().delete()
+    # def delete(self, using=None, keep_parents=False):
+    #     self.is_active = False
+    #     self.save()
+    #
+    # def really_delete(self):
+    #     super().delete()

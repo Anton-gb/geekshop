@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mainapp.models import Product, Category
 from mainapp.services import get_basket, get_hot_product, get_same_products
+from django.views.generic import TemplateView
 
 
 def index(request):
@@ -10,6 +11,16 @@ def index(request):
         'basket': get_basket(request.user),
     }
     return render(request, 'mainapp/index.html', context)
+
+
+# class IndexView(TemplateView):
+#     template_name = 'mainapp/index.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context_data = super().get_context_data(**kwargs)
+#         context_data['products'] = Product.objects.all()[:4]
+#         context_data['basket'] = get_basket(self.request.user)
+#         return context_data
 
 
 def products(request, pk=None):
