@@ -43,7 +43,7 @@ class UserCreateView(AccessMixin, CreateView):
 class UserListView(AccessMixin, ListView):
     model = ShopUser
     template_name = 'adminapp/user_list.html'
-    paginate_by = 2
+    paginate_by = 5
     extra_context = {
         'title': 'Список пользователей'
     }
@@ -99,9 +99,9 @@ class UserDeleteView(AccessMixin, DeleteView):
     success_url = reverse_lazy('adminapp:user_read')
 
     def form_valid(self, form):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
+        user = self.get_object()
+        user.is_active = False
+        user.save()
         return HttpResponseRedirect(self.success_url)
 
 
@@ -165,9 +165,9 @@ class CategoryDeleteView(AccessMixin, DeleteView):
     success_url = reverse_lazy('adminapp:category_read')
 
     def form_valid(self, form):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
+        category = self.get_object()
+        category.is_active = False
+        category.save()
         # for product in self.object.product_set.all():
         #     product.is_active = False
         #     product.save()
