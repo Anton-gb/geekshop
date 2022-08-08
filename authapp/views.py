@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import auth
-
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from authapp.models import ShopUser
+from authapp.services import send_verify_mail
 
 
 def login(request):
@@ -36,7 +37,12 @@ def register(request):
     if request.method == 'POST':
         register_form = ShopUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
-            register_form.save()
+            user = register_form.save()
+            if send_verify_mail(user):
+                print('сообщение подтверждения отправлено')
+            else:
+                print('ошибка отправки сообщения')
+
             return HttpResponseRedirect(reverse('authapp:login'))
     else:
         register_form = ShopUserRegisterForm()
@@ -62,3 +68,20 @@ def edit(request):
         'title': 'Редактирование профиля'
     }
     return render(request, 'authapp/edit.html', context)
+
+
+def verify(request, email, activation_key):
+    try:
+        user = ShopUser.objects.get(email=email)
+        if user.activation_key == activation_key and not user.is_activation_key_expired():
+            user.is_active = True
+            user.save()
+            auth.login(request, user)
+        else:
+            print(f'error activation user: {user}')
+
+        return render(request, 'authapp/verification.html')
+
+    except Exception as e:
+        print(f'error activation user: {e.args}')
+        return HttpResponseRedirect(reverse('index'))

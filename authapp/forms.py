@@ -1,10 +1,11 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
 from authapp.models import ShopUser
+import random, hashlib
+
 
 
 class ShopUserLoginForm(AuthenticationForm):
-
     class Meta:
         model = ShopUser
         fields = ('username', 'password',)
@@ -16,7 +17,6 @@ class ShopUserLoginForm(AuthenticationForm):
 
 
 class ShopUserRegisterForm(UserCreationForm):
-
     class Meta:
         model = ShopUser
         fields = ('username', 'first_name', 'last_name', 'email', 'age', 'avatar', 'password1', 'password2',)
@@ -25,6 +25,14 @@ class ShopUserRegisterForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+    def save(self, **kwargs):
+        user = super().save()
+        user.is_active = False
+        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
+        user.activation_key = hashlib.sha1((user.email + salt).encode('utf8')).hexdigest()
+        user.save()
+        return user
 
     def clean_age(self):
         current_age = self.cleaned_data['age']
@@ -42,7 +50,6 @@ class ShopUserRegisterForm(UserCreationForm):
 
 
 class ShopUserEditForm(UserChangeForm):
-
     class Meta:
         model = ShopUser
         fields = ('username', 'first_name', 'last_name', 'email', 'age', 'avatar', 'password',)

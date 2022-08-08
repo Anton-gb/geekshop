@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 def index(request):
     context = {
         'products': Product.objects.all()[:4],
-        'basket': get_basket(request.user),
     }
     return render(request, 'mainapp/index.html', context)
 
@@ -19,7 +18,6 @@ def index(request):
 #     def get_context_data(self, **kwargs):
 #         context_data = super().get_context_data(**kwargs)
 #         context_data['products'] = Product.objects.all()[:4]
-#         context_data['basket'] = get_basket(self.request.user)
 #         return context_data
 
 
@@ -46,7 +44,6 @@ def products(request, pk=None):
             'links_menu': links_menu,
             'products': paginated_products,
             'category': category_item,
-            'basket': get_basket(request.user),
         }
 
         return render(request, 'mainapp/products_list.html', context)
@@ -55,7 +52,6 @@ def products(request, pk=None):
     same_products = get_same_products(hot_product)
     context = {
         'links_menu': links_menu,
-        'basket': get_basket(request.user),
         'hot_product': hot_product,
         'same_products': same_products,
     }
@@ -67,13 +63,12 @@ def product(request, pk):
     context = {
         'product': product_item,
         'links_menu': Category.objects.all(),
-        'basket': get_basket(request.user),
     }
     return render(request, 'mainapp/product.html', context)
 
 
 def contact(request):
     context = {
-        'basket': get_basket(request.user),
+        
     }
     return render(request, 'mainapp/contact.html', context)
