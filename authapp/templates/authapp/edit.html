@@ -3,12 +3,17 @@
 {% block content %}
     <form class="form-row m-2" method="post" action="{% url 'authapp:edit' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ edit_form.as_p }}
+        {{ profile_form.as_p }}
         <button class="btn btn-primary" type="submit">Сохранить</button>
     </form>
-    <a class="btn btn-link w-100" href="{% url 'index' %}">На главную</a>
+    <button class="btn btn-link">
+        <a href="{% url 'index' %}">
+            На главную
+        </a>
+    </button>
     <div class="user_avatar"  >
-        <img src="/media/{{ user.avatar }}">
+        <img src="/media/{{ user.avatar }}" alt="">
     </div>
 
 {% endblock %}

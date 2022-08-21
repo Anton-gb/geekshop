@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from mainapp.models import Product, Category
-from mainapp.services import get_basket, get_hot_product, get_same_products
-from django.views.generic import TemplateView
+from mainapp.services import get_hot_product, get_same_products
+# from django.views.generic import TemplateView
 
 
 def index(request):
@@ -69,6 +69,6 @@ def product(request, pk):
 
 def contact(request):
     context = {
-        
+
     }
     return render(request, 'mainapp/contact.html', context)
