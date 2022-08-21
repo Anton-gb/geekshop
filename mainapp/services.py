@@ -1,4 +1,4 @@
-import random
+# import random
 
 from basketapp.models import Basket
 from mainapp.models import Product
